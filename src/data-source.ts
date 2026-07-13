@@ -3,6 +3,6 @@ import { DataSource } from 'typeorm';
 export default new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: ['src/**/*.entity.ts'],
-  migrations: ['src/migrations/*.ts'],
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  migrations: [__dirname + '/migrations/*{.ts,.js}'],
 });

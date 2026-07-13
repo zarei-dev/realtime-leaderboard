@@ -16,6 +16,15 @@ services:
       timeout: 5s
       retries: 5
 
+  migration:
+    build: .
+    command: ["npm", "run", "migration:run:prod"]
+    environment:
+      DATABASE_URL: postgresql://nest:password@postgres:5432/nest_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   api:
     build: .
     container_name: nest-api
@@ -24,11 +33,17 @@ services:
     environment:
       DATABASE_URL: postgresql://nest:password@postgres:5432/nest_db
       REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-dev-access-secret-change-me}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-dev-refresh-secret-change-me}
+      JWT_ACCESS_EXPIRES: ${JWT_ACCESS_EXPIRES:-15m}
+      JWT_REFRESH_EXPIRES: ${JWT_REFRESH_EXPIRES:-7d}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+      migration:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
