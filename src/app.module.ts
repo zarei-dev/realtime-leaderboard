@@ -6,6 +6,9 @@ import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { RedisModule } from './redis/redis.module';
+import { GamesModule } from './games/games.module';
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     HealthModule,
     AuthModule,
+    RedisModule,
+    GamesModule,
+    LeaderboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
